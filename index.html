@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IELTS Speaking Mock Test</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f5f5f4;
+      --color-text-primary: #1c1c1a;
+      --color-text-secondary: #5f5e5a;
+      --color-text-tertiary: #888780;
+      --color-text-danger: #a32d2d;
+      --color-text-success: #3b6d11;
+      --color-text-info: #185fa5;
+      --color-border-primary: rgba(0,0,0,0.4);
+      --color-border-secondary: rgba(0,0,0,0.3);
+      --color-border-tertiary: rgba(0,0,0,0.15);
+      --color-border-danger: rgba(163,45,45,0.4);
+      --color-border-info: rgba(24,95,165,0.4);
+      --color-bg-info: #e6f1fb;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --font: system-ui, -apple-system, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary: #1c1c1a;
+        --color-bg-secondary: #2c2c2a;
+        --color-text-primary: #f1efe8;
+        --color-text-secondary: #b4b2a9;
+        --color-text-tertiary: #888780;
+        --color-text-danger: #f09595;
+        --color-text-success: #c0dd97;
+        --color-text-info: #85b7eb;
+        --color-border-primary: rgba(255,255,255,0.4);
+        --color-border-secondary: rgba(255,255,255,0.3);
+        --color-border-tertiary: rgba(255,255,255,0.15);
+        --color-border-danger: rgba(240,149,149,0.4);
+        --color-border-info: rgba(133,183,235,0.4);
+        --color-bg-info: #042c53;
+      }
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg-secondary);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    #app {
+      background: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      border: 0.5px solid var(--color-border-tertiary);
+      width: 100%;
+      max-width: 700px;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+
+    .page { display: none; flex-direction: column; flex: 1; }
+    .page.active { display: flex; }
+
+    .progress-bar-wrap { height: 3px; background: var(--color-border-tertiary); }
+    .progress-bar-fill { height: 3px; background: #1D9E75; transition: width 0.4s ease; }
+
+    .header {
+      background: var(--color-bg-secondary);
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+      padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.04em; text-transform: uppercase; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .timer-badge {
+      font-size: 13px; font-weight: 500; color: var(--color-text-primary);
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-secondary);
+      border-radius: var(--radius-md);
+      padding: 4px 10px; font-variant-numeric: tabular-nums;
+      min-width: 64px; text-align: center;
+    }
+    .timer-badge.warning { color: var(--color-text-danger); border-color: var(--color-border-danger); }
+    .timer-badge.prep { color: var(--color-text-info); border-color: var(--color-border-info); }
+
+    .rec-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #E24B4A;
+      display: none; animation: blink 1.2s ease-in-out infinite;
+    }
+    .rec-dot.visible { display: inline-block; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .btn-next {
+      font-size: 13px; font-weight: 500;
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-secondary);
+      border-radius: var(--radius-md);
+      padding: 6px 16px; cursor: pointer; color: var(--color-text-primary);
+      display: flex; align-items: center; gap: 6px; transition: background 0.15s;
+    }
+    .btn-next:hover { background: var(--color-bg-secondary); }
+
+    .content { flex: 1; padding: 32px 28px; overflow-y: auto; }
+
+    .page-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 8px; }
+    .page-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 20px; line-height: 1.3; }
+    .page-subtitle { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 24px; line-height: 1.6; }
+
+    .instruction-block {
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius-lg);
+      border: 0.5px solid var(--color-border-tertiary);
+      padding: 20px 24px; margin-bottom: 16px;
+    }
+    .instruction-block h3 { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+    .instruction-block ul { list-style: none; }
+    .instruction-block ul li { font-size: 15px; color: var(--color-text-primary); line-height: 1.6; padding: 5px 0 5px 16px; position: relative; }
+    .instruction-block ul li::before { content: '—'; position: absolute; left: 0; color: var(--color-text-tertiary); font-size: 13px; }
+
+    .questions-list { list-style: none; }
+    .question-item {
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 14px 18px; margin-bottom: 10px;
+      font-size: 15px; color: var(--color-text-primary); line-height: 1.6;
+    }
+    .question-num { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .question-group-label { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .cue-card {
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-secondary);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px; margin-bottom: 16px;
+    }
+    .cue-card-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 18px; line-height: 1.5; }
+    .cue-card-prompt { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px; font-weight: 500; }
+    .cue-card ul { list-style: none; margin-bottom: 14px; }
+    .cue-card ul li { font-size: 14px; color: var(--color-text-primary); padding: 4px 0 4px 16px; position: relative; line-height: 1.5; }
+    .cue-card ul li::before { content: '•'; position: absolute; left: 0; color: var(--color-text-tertiary); }
+    .cue-card-explain { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 14px; }
+
+    .status-strip {
+      font-size: 13px; color: var(--color-text-tertiary);
+      padding: 10px 28px;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .countdown-notice {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--color-text-secondary);
+      background: var(--color-bg-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md); padding: 5px 10px; margin-top: 16px;
+    }
+
+    .congrats-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 40px 24px; }
+    .congrats-icon { font-size: 48px; color: var(--color-text-success); margin-bottom: 20px; }
+    .congrats-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+    .congrats-body { font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; max-width: 380px; margin-bottom: 32px; }
+
+    .downloads-section { width: 100%; max-width: 420px; text-align: left; }
+    .downloads-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-text-tertiary); margin-bottom: 12px; }
+    .download-item {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 10px 14px; margin-bottom: 8px;
+    }
+    .download-item-label { font-size: 14px; color: var(--color-text-primary); display: flex; align-items: center; gap: 8px; }
+    .download-btn {
+      font-size: 12px; font-weight: 500;
+      background: var(--color-bg-secondary);
+      border: 0.5px solid var(--color-border-secondary);
+      border-radius: var(--radius-md);
+      padding: 5px 12px; cursor: pointer; color: var(--color-text-primary);
+      display: flex; align-items: center; gap: 5px; transition: background 0.15s;
+      text-decoration: none;
+    }
+    .download-btn:hover { background: var(--color-border-tertiary); }
+    .download-btn.unavailable { opacity: 0.4; cursor: default; pointer-events: none; }
+
+    .start-footer {
+      padding: 24px 28px;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .btn-start-test {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 15px; font-weight: 500;
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-secondary);
+      border-radius: var(--radius-md);
+      padding: 12px 24px; cursor: pointer; color: var(--color-text-primary);
+      transition: background 0.15s; align-self: flex-start;
+    }
+    .btn-start-test:hover { background: var(--color-bg-secondary); }
+    .btn-start-test:disabled { opacity: 0.5; cursor: default; }
+    .mic-status {
+      font-size: 13px; color: var(--color-text-tertiary);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .mic-status.granted { color: var(--color-text-success); }
+    .mic-status.denied { color: var(--color-text-danger); }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Page 1: Instructions -->
+  <div id="page-1" class="page active">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:12%"></div></div>
+    <div class="header">
+      <span class="header-title">IELTS Speaking Test</span>
+      <div class="header-right"></div>
+    </div>
+    <div class="content">
+      <div class="page-label">Welcome</div>
+      <div class="page-title">Test instructions</div>
+      <div class="page-subtitle">Please read the following instructions carefully before beginning the test.</div>
+      <div class="instruction-block">
+        <h3>Overview</h3>
+        <ul><li>This is the IELTS Speaking Test. The test is divided into 3 parts.</li></ul>
+      </div>
+      <div class="instruction-block">
+        <h3>Part 1</h3>
+        <ul>
+          <li>You will be asked questions about yourself, your home, work or studies, and other familiar topics.</li>
+          <li>Please read each question aloud before giving your answer.</li>
+          <li>You will be given a total of 6 minutes to complete Part 1.</li>
+          <li>If you finish before the 6 minutes are up, please click the Next button to move to the next part.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="start-footer">
+      <button class="btn-start-test" id="btn-start" onclick="requestMicAndStart()">
+        <i class="ti ti-microphone"></i> Allow microphone &amp; start test
+      </button>
+      <div class="mic-status" id="mic-status">
+        <i class="ti ti-info-circle"></i> Microphone access is required to record your responses.
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 2: Part 1 Questions -->
+  <div id="page-2" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:28%"></div></div>
+    <div class="header">
+      <span class="header-title">Part 1 — Questions</span>
+      <div class="header-right">
+        <span class="rec-dot" id="rec2"></span>
+        <span class="timer-badge" id="timer2">6:00</span>
+        <button class="btn-next" onclick="nextFromPart(2, 3)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-label">Part 1</div>
+      <div class="page-title">About you and familiar topics</div>
+      <div class="countdown-notice" style="margin-bottom:16px; display:inline-flex;"><i class="ti ti-volume"></i> &nbsp;Please read each question aloud before giving your answer.</div>
+      <ul class="questions-list">
+        <li class="question-item"><div class="question-num">Question 1</div>What kinds of things make you laugh? </li>
+        <li class="question-item"><div class="question-num">Question 2</div>Do you like making other people laugh? <span style="color:var(--color-text-tertiary)">[Why/Why not?]</span></li>
+        <li class="question-item"><div class="question-num">Question 3</div>Do you think it's important for people to laugh? <span style="color:var(--color-text-tertiary)">[Whhy/Why not?]</span></li>
+        <li class="question-item"><div class="question-num">Question 4</div>Is laughing the same as feeling happy, do you think? <span style="color:var(--color-text-tertiary)">[Why/Why not?]</span></li>
+      </ul>
+      <div class="countdown-notice" id="notice2"><i class="ti ti-microphone"></i> <span id="notice2-text">Recording starts in 5 seconds…</span></div>
+    </div>
+    <div class="status-strip" id="status2"><i class="ti ti-clock"></i> Waiting to start recording…</div>
+  </div>
+
+  <!-- Page 3: Part 2 Instructions -->
+  <div id="page-3" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:42%"></div></div>
+    <div class="header">
+      <span class="header-title">IELTS Speaking Test</span>
+      <div class="header-right">
+        <button class="btn-next" onclick="goToPage(4)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-label">Part 2 — Instructions</div>
+      <div class="page-title">Long turn</div>
+      <div class="instruction-block">
+        <h3>What to expect</h3>
+        <ul>
+          <li>You will see a task card (cue card) with a specific topic and several prompt questions.</li>
+          <li>You have exactly 1 minute to prepare and make notes.</li>
+          <li>Please read the cue card aloud before giving your response.</li>
+          <li>This is followed by up to 4 minutes of speaking time.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 4: Part 2 Cue Card -->
+  <div id="page-4" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:56%"></div></div>
+    <div class="header">
+      <span class="header-title">Part 2 — Cue Card</span>
+      <div class="header-right">
+        <span class="rec-dot" id="rec4"></span>
+        <span class="timer-badge" id="timer4" style="display:none">4:00</span>
+        <span class="timer-badge prep" id="prepbadge4">Prep: 1:00</span>
+        <button class="btn-next" onclick="nextFromPart(4, 5)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-label">Part 2</div>
+      <div class="page-title">Task card</div>
+      <div class="countdown-notice" style="margin-bottom:16px; display:inline-flex;"><i class="ti ti-volume"></i> &nbsp;Please read the cue card aloud before giving your response.</div>
+      <div class="cue-card">
+        <div class="cue-card-title">Describe a piece of electronic equipment that you find useful.</div>
+        <div class="cue-card-prompt">You should say:</div>
+        <ul>
+          <li>What it is</li>
+          <li>How you learned to use it</li>
+          <li>How long you have had it</li>
+        </ul>
+        <div class="cue-card-explain">And explain why you find this piece of electronic equipment useful.</div>
+      </div>
+      <div class="countdown-notice" id="notice4"><i class="ti ti-hourglass"></i> <span id="notice4-text">Preparation time starts in 15 seconds…</span></div>
+    </div>
+    <div class="status-strip" id="status4"><i class="ti ti-clock"></i> Get ready to prepare your notes.</div>
+  </div>
+
+  <!-- Page 5: Part 3 Instructions -->
+  <div id="page-5" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:70%"></div></div>
+    <div class="header">
+      <span class="header-title">IELTS Speaking Test</span>
+      <div class="header-right">
+        <button class="btn-next" onclick="goToPage(6)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-label">Part 3 — Instructions</div>
+      <div class="page-title">Discussion</div>
+      <div class="instruction-block">
+        <h3>What to expect</h3>
+        <ul>
+          <li>You will be asked a broader range of questions based on the topic you discussed in Part 2.</li>
+          <li>Please read each question aloud before giving your answer.</li>
+          <li>You are given a total of 6 minutes to complete this part.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 6: Part 3 Questions -->
+  <div id="page-6" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:84%"></div></div>
+    <div class="header">
+      <span class="header-title">Part 3 — Discussion</span>
+      <div class="header-right">
+        <span class="rec-dot" id="rec6"></span>
+        <span class="timer-badge" id="timer6">6:00</span>
+        <button class="btn-next" onclick="nextFromPart(6, 7)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-label">Part 3</div>
+      <div class="page-title">Discussion questions</div>
+      <div class="countdown-notice" style="margin-bottom:16px; display:inline-flex;"><i class="ti ti-volume"></i> &nbsp;Please read each question aloud before giving your answer.</div>
+      <div class="question-group-label">Technology and housework</div>
+      <ul class="questions-list">
+        <li class="question-item"><div class="question-num">Question 1</div>What kinds of machine are used for housework in modern homes in your country?</li>
+        <li class="question-item"><div class="question-num">Question 2</div>How have these machines benefited people? Are there any negative effects of using them?</li>
+        <li class="question-item"><div class="question-num">Question 3</div>Do you think all new homes will be equipped with household machines in the future? Why?</li>
+      </ul>
+      <div class="question-group-label">Technology in the workplace</div>
+      <ul class="questions-list">
+        <li class="question-item"><div class="question-num">Question 4</div>What kinds of equipment do most workers need to use in offices today?</li>
+        <li class="question-item"><div class="question-num">Question 5</div>How have developments in technology affected employment in your country?</li>
+        <li class="question-item"><div class="question-num">Question 6</div>Some people think that technology has brought more stress than benefits to employed people nowadays. Would you agree or disagree?</li>
+      </ul>
+      <div class="countdown-notice" id="notice6"><i class="ti ti-microphone"></i> <span id="notice6-text">Recording starts in 15 seconds…</span></div>
+    </div>
+    <div class="status-strip" id="status6"><i class="ti ti-clock"></i> Waiting to start recording…</div>
+  </div>
+
+  <!-- Page 7: Completion -->
+  <div id="page-7" class="page">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div>
+    <div class="header">
+      <span class="header-title">IELTS Speaking Test</span>
+      <div class="header-right"></div>
+    </div>
+    <div class="congrats-wrap">
+      <i class="ti ti-circle-check congrats-icon"></i>
+      <div class="congrats-title">Well done! You've completed the speaking test.</div>
+      <div class="congrats-body">All three parts are now finished. You may now leave the cubicle. Please download your recordings below and rename each file using the format:<br><br><strong style="color:var(--color-text-primary)">"Teacher Name - Part 1"</strong><br><span style="font-size:13px">e.g. Brendo - Part 1, Brendo - Part 2, Brendo - Part 3</span></div>
+      <div class="downloads-section">
+        <div class="downloads-label">Your recordings</div>
+        <div class="download-item">
+          <div class="download-item-label"><i class="ti ti-microphone"></i> Part 1 — Familiar topics</div>
+          <a id="dl-2" class="download-btn unavailable" download="IELTS_Part1.webm"><i class="ti ti-download"></i> Download</a>
+        </div>
+        <div class="download-item">
+          <div class="download-item-label"><i class="ti ti-microphone"></i> Part 2 — Long turn</div>
+          <a id="dl-4" class="download-btn unavailable" download="IELTS_Part2.webm"><i class="ti ti-download"></i> Download</a>
+        </div>
+        <div class="download-item">
+          <div class="download-item-label"><i class="ti ti-microphone"></i> Part 3 — Discussion</div>
+          <a id="dl-6" class="download-btn unavailable" download="IELTS_Part3.webm"><i class="ti ti-download"></i> Download</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentPage = 1;
+  let activeMediaRecorder = null;
+  let audioChunks = {};
+  let savedBlobs = {};
+  let allTimers = {};
+  let micStream = null;
+
+  async function requestMicAndStart() {
+    const btn = document.getElementById('btn-start');
+    const status = document.getElementById('mic-status');
+    btn.disabled = true;
+    status.innerHTML = '<i class="ti ti-loader"></i> Requesting microphone access…';
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      status.className = 'mic-status granted';
+      status.innerHTML = '<i class="ti ti-circle-check"></i> Microphone access granted. Starting test…';
+      setTimeout(() => goToPage(2), 800);
+    } catch (e) {
+      btn.disabled = false;
+      status.className = 'mic-status denied';
+      status.innerHTML = '<i class="ti ti-circle-x"></i> Microphone access denied. Please allow microphone access in your browser settings and try again.';
+    }
+  }
+
+  function clearTimers(page) {
+    if (allTimers[page]) {
+      allTimers[page].forEach(id => { clearInterval(id); clearTimeout(id); });
+      allTimers[page] = [];
+    }
+  }
+  function addTimer(page, id) {
+    if (!allTimers[page]) allTimers[page] = [];
+    allTimers[page].push(id);
+  }
+
+  function fmt(s) {
+    return Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60);
+  }
+
+  function goToPage(n) {
+    document.getElementById('page-' + currentPage).classList.remove('active');
+    currentPage = n;
+    document.getElementById('page-' + n).classList.add('active');
+    if (n === 2) setupPage2();
+    if (n === 4) setupPage4();
+    if (n === 6) setupPage6();
+  }
+
+  function nextFromPart(from, to) {
+    clearTimers(from);
+    stopRecording(from);
+    goToPage(to);
+  }
+
+  async function getMic() {
+    if (!micStream) micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    return micStream;
+  }
+
+  async function startRecording(page) {
+    try {
+      const s = await getMic();
+      audioChunks[page] = [];
+      const mr = new MediaRecorder(s);
+      activeMediaRecorder = mr;
+      mr.ondataavailable = e => { if (e.data.size > 0) audioChunks[page].push(e.data); };
+      mr.onstop = () => {
+        const blob = new Blob(audioChunks[page], { type: 'audio/webm' });
+        savedBlobs[page] = blob;
+        const dlEl = document.getElementById('dl-' + page);
+        if (dlEl) {
+          dlEl.href = URL.createObjectURL(blob);
+          dlEl.classList.remove('unavailable');
+        }
+      };
+      mr.start();
+      return mr;
+    } catch (e) { return null; }
+  }
+
+  function stopRecording(page) {
+    if (activeMediaRecorder && activeMediaRecorder.state !== 'inactive') {
+      activeMediaRecorder.stop();
+    }
+    const rd = document.getElementById('rec' + page);
+    if (rd) rd.classList.remove('visible');
+    const tb = document.getElementById('timer' + page);
+    if (tb) tb.classList.remove('warning');
+  }
+
+  function runTimer(page, timerEl, totalSecs, onDone) {
+    let remaining = totalSecs;
+    timerEl.textContent = fmt(remaining);
+    const iv = setInterval(() => {
+      remaining--;
+      timerEl.textContent = fmt(remaining);
+      if (remaining <= 30) timerEl.classList.add('warning');
+      if (remaining <= 0) { clearInterval(iv); if (onDone) onDone(); }
+    }, 1000);
+    addTimer(page, iv);
+  }
+
+  function setupPage2() {
+    const noticeText = document.getElementById('notice2-text');
+    const noticeEl = document.getElementById('notice2');
+    const statusEl = document.getElementById('status2');
+    const timerEl = document.getElementById('timer2');
+    const recDot = document.getElementById('rec2');
+    let cd = 5;
+    const cdIv = setInterval(() => {
+      cd--;
+      if (cd > 0) noticeText.textContent = 'Recording starts in ' + cd + ' second' + (cd !== 1 ? 's' : '') + '…';
+      else {
+        clearInterval(cdIv);
+        noticeEl.style.display = 'none';
+        recDot.classList.add('visible');
+        statusEl.innerHTML = '<i class="ti ti-microphone"></i> Recording in progress…';
+        startRecording(2).then(mr => {
+          if (!mr) { statusEl.innerHTML = '<i class="ti ti-microphone-off"></i> Microphone access denied.'; recDot.classList.remove('visible'); return; }
+          runTimer(2, timerEl, 6 * 60, () => {
+            stopRecording(2);
+            statusEl.innerHTML = '<i class="ti ti-check"></i> Recording complete.';
+          });
+        });
+      }
+    }, 1000);
+    addTimer(2, cdIv);
+  }
+
+  function setupPage4() {
+    const noticeText = document.getElementById('notice4-text');
+    const noticeEl = document.getElementById('notice4');
+    const statusEl = document.getElementById('status4');
+    const timerEl = document.getElementById('timer4');
+    const prepBadge = document.getElementById('prepbadge4');
+    const recDot = document.getElementById('rec4');
+    let cd = 15;
+    const cdIv = setInterval(() => {
+      cd--;
+      if (cd > 0) noticeText.textContent = 'Preparation time starts in ' + cd + ' second' + (cd !== 1 ? 's' : '') + '…';
+      else {
+        clearInterval(cdIv);
+        noticeEl.style.display = 'none';
+        statusEl.innerHTML = '<i class="ti ti-hourglass"></i> Preparation time — make your notes now.';
+        let prep = 60;
+        prepBadge.textContent = 'Prep: ' + fmt(prep);
+        const prepIv = setInterval(() => {
+          prep--;
+          prepBadge.textContent = 'Prep: ' + fmt(prep);
+          if (prep <= 10) prepBadge.classList.add('warning');
+          if (prep <= 0) {
+            clearInterval(prepIv);
+            prepBadge.style.display = 'none';
+            timerEl.style.display = '';
+            recDot.classList.add('visible');
+            statusEl.innerHTML = '<i class="ti ti-microphone"></i> Now speaking — recording in progress…';
+            startRecording(4).then(mr => {
+              if (!mr) { statusEl.innerHTML = '<i class="ti ti-microphone-off"></i> Microphone access denied.'; recDot.classList.remove('visible'); return; }
+              runTimer(4, timerEl, 4 * 60, () => {
+                stopRecording(4);
+                statusEl.innerHTML = '<i class="ti ti-check"></i> Recording complete.';
+              });
+            });
+          }
+        }, 1000);
+        addTimer(4, prepIv);
+      }
+    }, 1000);
+    addTimer(4, cdIv);
+  }
+
+  function setupPage6() {
+    const noticeText = document.getElementById('notice6-text');
+    const noticeEl = document.getElementById('notice6');
+    const statusEl = document.getElementById('status6');
+    const timerEl = document.getElementById('timer6');
+    const recDot = document.getElementById('rec6');
+    let cd = 15;
+    const cdIv = setInterval(() => {
+      cd--;
+      if (cd > 0) noticeText.textContent = 'Recording starts in ' + cd + ' second' + (cd !== 1 ? 's' : '') + '…';
+      else {
+        clearInterval(cdIv);
+        noticeEl.style.display = 'none';
+        recDot.classList.add('visible');
+        statusEl.innerHTML = '<i class="ti ti-microphone"></i> Recording in progress…';
+        startRecording(6).then(mr => {
+          if (!mr) { statusEl.innerHTML = '<i class="ti ti-microphone-off"></i> Microphone access denied.'; recDot.classList.remove('visible'); return; }
+          runTimer(6, timerEl, 6 * 60, () => {
+            stopRecording(6);
+            statusEl.innerHTML = '<i class="ti ti-check"></i> Recording complete.';
+          });
+        });
+      }
+    }, 1000);
+    addTimer(6, cdIv);
+  }
+</script>
+</body>
+</html>
